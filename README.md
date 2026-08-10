@@ -461,7 +461,11 @@ Phase 24 🔲  Final Documentation
 ## 🤝 Contributing
 
 This is a structured 24-phase project. Each phase is independently reviewable.
-See [`docs/architecture.md`](docs/architecture.md) for the full design.
+
+- **Architecture:** [`docs/architecture.md`](docs/architecture.md)
+- **Git & GitHub Workflow:** [`docs/git-workflow.md`](docs/git-workflow.md) — **read this before starting any work**
+- **AI Agent Design:** [`docs/ai-agents.md`](docs/ai-agents.md)
+- **API Reference:** [`docs/api.md`](docs/api.md)
 
 ---
 
