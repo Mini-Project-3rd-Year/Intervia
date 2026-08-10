@@ -1,0 +1,46 @@
+# FastAPI and web server
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+python-multipart==0.0.9
+
+# Environment and configuration
+pydantic==2.9.2
+pydantic-settings==2.5.2
+python-dotenv==1.0.1
+
+# HTTP client
+httpx==0.27.2
+
+# Testing
+pytest==8.3.3
+pytest-asyncio==0.24.0
+httpx==0.27.2
+
+# Logging
+structlog==24.4.0
+
+# Database (will be activated in Phase 5)
+# sqlalchemy==2.0.35
+# asyncpg==0.29.0
+# alembic==1.13.3
+# pgvector==0.3.5
+
+# Auth / JWT (will be activated in Phase 1)
+# python-jose[cryptography]==3.3.0
+# passlib[bcrypt]==1.7.4
+
+# AI / LLM (will be activated in Phase 6)
+# google-generativeai==0.8.3
+# langchain==0.3.4
+# langgraph==0.2.38
+# openai==1.51.2
+
+# Resume parsing (will be activated in Phase 2)
+# pypdf==5.0.1
+# python-docx==1.1.2
+
+# File uploads (will be activated in Phase 2)
+# boto3==1.35.32
+
+# Vector embeddings (will be activated in Phase 4)
+# sentence-transformers==3.1.1

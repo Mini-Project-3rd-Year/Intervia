@@ -1,0 +1,85 @@
+# ============================================================
+# INTERVIA — .gitignore
+# ============================================================
+
+# ---- Environment & Secrets --------------------------------
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+secrets/
+
+# ---- Python -----------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+.venv/
+venv/
+ENV/
+env/
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.nox/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+cython_debug/
+
+# ---- Node / npm -------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.npm
+
+# ---- Vite / Frontend Build --------------------------------
+frontend/dist/
+frontend/.vite/
+frontend/build/
+
+# ---- IDEs & Editors ---------------------------------------
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.DS_Store
+Thumbs.db
+
+# ---- Docker -----------------------------------------------
+*.env.docker
+
+# ---- Logs -------------------------------------------------
+logs/
+*.log
+
+# ---- Misc -------------------------------------------------
+.cache/
+tmp/
+temp/
