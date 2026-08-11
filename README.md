@@ -1,4 +1,4 @@
-# Intervia — AI-Powered Adaptive Interview Platform
+# Intervia - AI-Powered Adaptive Interview Platform
 
 > **Interview smarter. Improve faster.**
 
