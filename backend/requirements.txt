@@ -4,7 +4,7 @@ uvicorn[standard]==0.30.6
 python-multipart==0.0.9
 
 # Environment and configuration
-pydantic==2.9.2
+pydantic[email]==2.9.2
 pydantic-settings==2.5.2
 python-dotenv==1.0.1
 
@@ -25,9 +25,9 @@ structlog==24.4.0
 # alembic==1.13.3
 # pgvector==0.3.5
 
-# Auth / JWT (will be activated in Phase 1)
-# python-jose[cryptography]==3.3.0
-# passlib[bcrypt]==1.7.4
+# Auth / Supabase (Phase 1)
+supabase==2.9.1
+# pydantic[email] already listed above — required for EmailStr validation
 
 # AI / LLM (will be activated in Phase 6)
 # google-generativeai==0.8.3

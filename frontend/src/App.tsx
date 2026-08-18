@@ -1,98 +1,107 @@
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Pages
 import LandingPage from "./pages/LandingPage.tsx";
+import LoginPage from "./pages/LoginPage.tsx";
+import RegisterPage from "./pages/RegisterPage.tsx";
+import DashboardPage from "./pages/DashboardPage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import PlaceholderPage from "./pages/PlaceholderPage.tsx";
 
+// Auth
+import { ProtectedRoute } from "./components/auth/ProtectedRoute.tsx";
+import { useAuthStore } from "./features/auth/authStore.ts";
+
 function App() {
+  const initialize = useAuthStore((s) => s.initialize);
+
+  // Restore Supabase session on app load and subscribe to auth state changes.
+  // Returns an unsubscribe function for cleanup.
+  useEffect(() => {
+    const unsubscribe = initialize();
+    return unsubscribe;
+  }, [initialize]);
+
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public routes */}
+        {/* ── Public routes ─────────────────────────────────── */}
         <Route path="/" element={<LandingPage />} />
-        <Route
-          path="/login"
-          element={
-            <PlaceholderPage
-              title="Sign In"
-              description="Authentication — coming in Phase 1"
-              phase="Phase 1"
-            />
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <PlaceholderPage
-              title="Create Account"
-              description="Authentication — coming in Phase 1"
-              phase="Phase 1"
-            />
-          }
-        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
-        {/* Protected routes (auth guard in Phase 1) */}
+        {/* ── Protected routes ──────────────────────────────── */}
         <Route
           path="/dashboard"
           element={
-            <PlaceholderPage
-              title="Dashboard"
-              description="Your interview overview and progress — coming in Phase 18"
-              phase="Phase 18"
-            />
-          }
-        />
-        <Route
-          path="/interview"
-          element={
-            <PlaceholderPage
-              title="Interview Session"
-              description="Adaptive AI interview engine — coming in Phase 7"
-              phase="Phase 7"
-            />
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
           }
         />
         <Route
           path="/resume"
           element={
-            <PlaceholderPage
-              title="Resume Intelligence"
-              description="Upload and analyze your resume — coming in Phase 2"
-              phase="Phase 2"
-            />
+            <ProtectedRoute>
+              <PlaceholderPage
+                title="Resume Intelligence"
+                description="Upload and analyze your resume — coming in Phase 2"
+                phase="Phase 2"
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/interview"
+          element={
+            <ProtectedRoute>
+              <PlaceholderPage
+                title="Interview Session"
+                description="Adaptive AI interview engine — coming in Phase 7"
+                phase="Phase 7"
+              />
+            </ProtectedRoute>
           }
         />
         <Route
           path="/jobs"
           element={
-            <PlaceholderPage
-              title="Job Matching"
-              description="Match your profile to job descriptions — coming in Phase 3"
-              phase="Phase 3"
-            />
+            <ProtectedRoute>
+              <PlaceholderPage
+                title="Job Matching"
+                description="Match your profile to job descriptions — coming in Phase 3"
+                phase="Phase 3"
+              />
+            </ProtectedRoute>
           }
         />
         <Route
           path="/coaching"
           element={
-            <PlaceholderPage
-              title="AI Coach"
-              description="Personalized coaching and improvement plan — coming in Phase 15"
-              phase="Phase 15"
-            />
+            <ProtectedRoute>
+              <PlaceholderPage
+                title="AI Coach"
+                description="Personalized coaching and improvement plan — coming in Phase 15"
+                phase="Phase 15"
+              />
+            </ProtectedRoute>
           }
         />
         <Route
           path="/profile"
           element={
-            <PlaceholderPage
-              title="Profile"
-              description="Your account and settings — coming in Phase 1"
-              phase="Phase 1"
-            />
+            <ProtectedRoute>
+              <PlaceholderPage
+                title="Profile"
+                description="Your account and settings — coming in Phase 1"
+                phase="Phase 1"
+              />
+            </ProtectedRoute>
           }
         />
 
-        {/* 404 */}
+        {/* ── 404 ───────────────────────────────────────────── */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
@@ -100,3 +109,4 @@ function App() {
 }
 
 export default App;
+

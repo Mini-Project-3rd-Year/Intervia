@@ -5,14 +5,10 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    // fastRefresh: false prevents @vitejs/plugin-react v6 (OXC-based) from
-    // injecting $RefreshReg$ / $RefreshSig$ wrappers that call
-    // RefreshRuntime.register(), a method that doesn't exist in the runtime
-    // shipped by this version, which would crash JS evaluation and prevent
-    // React from mounting.
-    react({ fastRefresh: false }),
+    react(),
     tailwindcss(),
   ],
+
 
   server: {
     port: 5173,

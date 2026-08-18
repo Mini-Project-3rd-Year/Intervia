@@ -254,3 +254,263 @@ body {
   pointer-events: none;
   z-index: 0;
 }
+
+/* ============================================================
+   PHASE 1 — Auth Pages & Dashboard
+   ============================================================ */
+
+/* ---- Auth page layout ---------------------------------------- */
+.auth-page {
+  min-height: 100vh;
+  background: #050c1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  font-family: "Inter", "Outfit", system-ui, sans-serif;
+}
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 420px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 60px rgba(37, 99, 235, 0.12);
+}
+
+/* ---- Brand --------------------------------------------------- */
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+  justify-content: center;
+}
+.auth-brand-icon { font-size: 1.5rem; }
+.auth-brand-name {
+  font-size: 1.35rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #60a5fa, #22d3ee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+/* ---- Headings ------------------------------------------------ */
+.auth-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  text-align: center;
+  margin: 0 0 0.35rem;
+}
+.auth-subtitle {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.45);
+  text-align: center;
+  margin: 0 0 1.75rem;
+}
+
+/* ---- Alerts -------------------------------------------------- */
+.auth-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 10px;
+  color: #fca5a5;
+  font-size: 0.85rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+.auth-success {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 10px;
+  color: #86efac;
+  font-size: 0.85rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+
+/* ---- Form ---------------------------------------------------- */
+.auth-form { display: flex; flex-direction: column; gap: 1.1rem; }
+.auth-field { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.auth-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.02em;
+}
+.auth-label-hint { font-weight: 400; opacity: 0.6; }
+
+.auth-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #f1f5f9;
+  font-size: 0.9rem;
+  padding: 0.7rem 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+.auth-input::placeholder { color: rgba(255, 255, 255, 0.25); }
+.auth-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+}
+.auth-input:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ---- Buttons ------------------------------------------------- */
+.auth-btn {
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.auth-btn:active { transform: scale(0.98); }
+.auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.auth-btn-primary {
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  color: #fff;
+  width: 100%;
+  margin-top: 0.5rem;
+  letter-spacing: 0.01em;
+}
+.auth-btn-primary:hover:not(:disabled) { opacity: 0.9; }
+
+.auth-btn-secondary {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.5rem 1rem;
+  font-size: 0.825rem;
+}
+.auth-btn-secondary:hover:not(:disabled) { background: rgba(255, 255, 255, 0.1); }
+
+/* ---- Footer link --------------------------------------------- */
+.auth-footer-text {
+  text-align: center;
+  font-size: 0.825rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 1.25rem 0 0;
+}
+.auth-link {
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: 500;
+}
+.auth-link:hover { text-decoration: underline; }
+
+/* ---- Spinner ------------------------------------------------- */
+.auth-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(59, 130, 246, 0.15);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---- Dashboard ----------------------------------------------- */
+.dashboard-page {
+  min-height: 100vh;
+  background: #050c1a;
+  font-family: "Inter", "Outfit", system-ui, sans-serif;
+  color: #f1f5f9;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.dashboard-brand { display: flex; align-items: center; gap: 0.5rem; }
+.dashboard-header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.dashboard-user-email {
+  font-size: 0.825rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.dashboard-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.dashboard-welcome { margin-bottom: 2.5rem; }
+.dashboard-welcome-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+.dashboard-welcome-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0;
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+.dashboard-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.dashboard-card:hover {
+  border-color: rgba(59, 130, 246, 0.35);
+  transform: translateY(-2px);
+}
+.dashboard-card-coming-soon { opacity: 0.7; }
+.dashboard-card-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+.dashboard-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+}
+.dashboard-card-desc {
+  font-size: 0.825rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0 0 1rem;
+  line-height: 1.5;
+}
+.dashboard-phase-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.15);
+  border: 1px solid rgba(37, 99, 235, 0.3);
+  color: #60a5fa;
+  letter-spacing: 0.04em;
+}
+

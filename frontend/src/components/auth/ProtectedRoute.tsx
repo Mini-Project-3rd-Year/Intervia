@@ -1,0 +1,45 @@
+/**
+ * frontend/src/components/auth/ProtectedRoute.tsx
+ * Phase 1 — Route guard for authenticated pages.
+ *
+ * Behavior:
+ *   loading  → shows a full-screen spinner
+ *   no session → redirects to /login
+ *   authenticated → renders children
+ */
+
+import type { ReactNode } from "react";
+import { Navigate } from "react-router-dom";
+import { useAuthStore } from "../../features/auth/authStore";
+
+interface ProtectedRouteProps {
+  children: ReactNode;
+}
+
+export function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const { session, loading } = useAuthStore();
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#050c1a",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div className="auth-spinner" aria-label="Loading…" />
+      </div>
+    );
+  }
+
+  if (!session) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+}
+
+export default ProtectedRoute;

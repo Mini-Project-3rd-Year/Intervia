@@ -1,13 +1,5 @@
 /**
- * features/auth/index.ts — Authentication feature stub (Phase 1)
- *
- * Will contain:
- *  - LoginPage
- *  - RegisterPage
- *  - AuthGuard (protected route wrapper)
- *  - useAuth hook
- *  - authStore (Zustand)
- *  - Supabase / JWT auth service
+ * features/auth/index.ts — Authentication feature (Phase 1)
  */
 
-export {};
+export { useAuthStore } from "./authStore";
