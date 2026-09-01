@@ -399,6 +399,41 @@ body {
 }
 .auth-btn-secondary:hover:not(:disabled) { background: rgba(255, 255, 255, 0.1); }
 
+.auth-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1rem 0;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.auth-divider span {
+  padding: 0 0.75rem;
+}
+
+.auth-btn-demo {
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #93c5fd;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.auth-btn-demo:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.22);
+  border-color: rgba(59, 130, 246, 0.5);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
+}
+
 /* ---- Footer link --------------------------------------------- */
 .auth-footer-text {
   text-align: center;
