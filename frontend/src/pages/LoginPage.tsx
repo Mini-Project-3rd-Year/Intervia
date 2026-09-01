@@ -115,6 +115,32 @@ export default function LoginPage() {
           >
             {submitting ? "Signing in…" : "Sign In"}
           </button>
+
+          <div className="auth-divider">
+            <span>or</span>
+          </div>
+
+          <button
+            id="login-demo"
+            type="button"
+            className="auth-btn auth-btn-demo"
+            disabled={submitting}
+            onClick={async () => {
+              setSubmitting(true);
+              clearError();
+              try {
+                const { loginDemo } = useAuthStore.getState();
+                await loginDemo();
+                navigate("/dashboard", { replace: true });
+              } catch {
+                // error handled in store
+              } finally {
+                setSubmitting(false);
+              }
+            }}
+          >
+            ⚡ One-Click Demo Login (Guest)
+          </button>
         </form>
 
         <p className="auth-footer-text">
