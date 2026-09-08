@@ -5,11 +5,12 @@
 
 import { useState, useEffect, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuthStore } from "../features/auth/authStore";
+import { authService } from "../services/authService";
+import { useAuthStore } from "../store/authStore";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
-  const { register, session, loading, error, clearError } = useAuthStore();
+  const { isAuthenticated, setAuth } = useAuthStore();
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -17,22 +18,28 @@ export default function RegisterPage() {
   const [confirm, setConfirm] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // If already logged in, redirect to dashboard
   useEffect(() => {
-    if (!loading && session) {
-      navigate("/dashboard", { replace: true });
+    if (isAuthenticated) {
+      navigate("/resume", { replace: true });
     }
-  }, [session, loading, navigate]);
+  }, [isAuthenticated, navigate]);
 
   const validate = (): boolean => {
+    const trimmedEmail = email.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!fullName.trim()) {
       setValidationError("Full name is required.");
       return false;
     }
-    if (!email.trim()) {
+    if (!trimmedEmail) {
       setValidationError("Email is required.");
+      return false;
+    }
+    if (!emailRegex.test(trimmedEmail)) {
+      setValidationError("Please enter a valid email address.");
       return false;
     }
     if (password.length < 8) {
@@ -49,26 +56,26 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    clearError();
-    setSuccessMessage(null);
+    setSubmitError(null);
     if (!validate()) return;
 
     setSubmitting(true);
     try {
-      await register(email.trim(), password, fullName.trim());
-      // If Supabase email confirmation is enabled, the session won't be set yet
-      // Show a friendly message instead of redirecting
-      setSuccessMessage(
-        "Account created! Check your email to confirm your address, then sign in."
-      );
-    } catch {
-      // error is set in the store
+      const response = await authService.register(fullName.trim(), email.trim(), password);
+      setAuth(response.user, response.access_token);
+      navigate("/resume", { replace: true });
+    } catch (error: unknown) {
+      const message =
+        error && typeof error === "object" && "response" in error
+          ? (error as { response?: { data?: { detail?: string } } }).response?.data?.detail
+          : null;
+      setSubmitError(message || "Unable to create your account. Please try again.");
     } finally {
       setSubmitting(false);
     }
   };
 
-  const displayError = validationError || error;
+  const displayError = validationError || submitError;
 
   return (
     <div className="auth-page">
@@ -85,11 +92,6 @@ export default function RegisterPage() {
         {displayError && (
           <div className="auth-error" role="alert">
             {displayError}
-          </div>
-        )}
-        {successMessage && (
-          <div className="auth-success" role="status">
-            {successMessage}
           </div>
         )}
 
@@ -169,7 +171,14 @@ export default function RegisterPage() {
             className="auth-btn auth-btn-primary"
             disabled={submitting}
           >
-            {submitting ? "Creating account…" : "Create Account"}
+            {submitting ? (
+              <>
+                <span className="auth-spinner" style={{ width: 16, height: 16, borderWidth: 2 }} />
+                <span>Creating account…</span>
+              </>
+            ) : (
+              "Create Account"
+            )}
           </button>
         </form>
 

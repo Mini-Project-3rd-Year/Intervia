@@ -10,16 +10,16 @@
 
 import type { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-import { useAuthStore } from "../../features/auth/authStore";
+import { useAuthStore } from "../../store/authStore";
 
 interface ProtectedRouteProps {
   children: ReactNode;
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { session, loading } = useAuthStore();
+  const { isAuthenticated, initialized } = useAuthStore();
 
-  if (loading) {
+  if (!initialized) {
     return (
       <div
         style={{
@@ -35,7 +35,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     );
   }
 
-  if (!session) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 

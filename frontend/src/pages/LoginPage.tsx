@@ -5,54 +5,68 @@
 
 import { useState, useEffect, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuthStore } from "../features/auth/authStore";
+import { authService } from "../services/authService";
+import { useAuthStore } from "../store/authStore";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login, session, loading, error, clearError } = useAuthStore();
+  const { isAuthenticated, setAuth } = useAuthStore();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // If already logged in, redirect to dashboard
   useEffect(() => {
-    if (!loading && session) {
+    if (isAuthenticated) {
       navigate("/dashboard", { replace: true });
     }
-  }, [session, loading, navigate]);
+  }, [isAuthenticated, navigate]);
 
   const validate = (): boolean => {
-    if (!email.trim()) {
+    const trimmedEmail = email.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!trimmedEmail) {
       setValidationError("Email is required.");
       return false;
     }
-    if (!password) {
-      setValidationError("Password is required.");
+    if (!emailRegex.test(trimmedEmail)) {
+      setValidationError("Please enter a valid email address.");
       return false;
     }
+    if (!password || password.length < 8) {
+      setValidationError("Password must be at least 8 characters long.");
+      return false;
+    }
+
     setValidationError(null);
     return true;
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    clearError();
+    setSubmitError(null);
     if (!validate()) return;
 
     setSubmitting(true);
     try {
-      await login(email.trim(), password);
+      const response = await authService.login(email.trim(), password);
+      setAuth(response.user, response.access_token);
       navigate("/dashboard", { replace: true });
-    } catch {
-      // error is set in the store
+    } catch (error: unknown) {
+      const message =
+        error && typeof error === "object" && "response" in error
+          ? (error as { response?: { data?: { detail?: string } } }).response?.data?.detail
+          : null;
+      setSubmitError(message || "Invalid email or password. Please try again.");
     } finally {
       setSubmitting(false);
     }
   };
 
-  const displayError = validationError || error;
+  const displayError = validationError || submitError;
 
   return (
     <div className="auth-page">
@@ -113,7 +127,14 @@ export default function LoginPage() {
             className="auth-btn auth-btn-primary"
             disabled={submitting}
           >
-            {submitting ? "Signing in…" : "Sign In"}
+            {submitting ? (
+              <>
+                <span className="auth-spinner" style={{ width: 16, height: 16, borderWidth: 2 }} />
+                <span>Signing in…</span>
+              </>
+            ) : (
+              "Sign In"
+            )}
           </button>
         </form>
 

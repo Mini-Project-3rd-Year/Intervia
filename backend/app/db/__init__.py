@@ -1,1 +1,6 @@
-"""db/__init__.py — Database connection and session stub (Phase 5)"""
+"""Database primitives used by feature repositories and migrations."""
+
+from app.db.base import Base
+from app.db.session import get_db, get_engine, get_session_factory
+
+__all__ = ["Base", "get_db", "get_engine", "get_session_factory"]

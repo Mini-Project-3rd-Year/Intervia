@@ -1,27 +1,21 @@
-﻿"""
-backend/app/models/user.py
-Phase 1 stub — User model placeholder.
+﻿"""Application-owned profile model; Supabase remains the identity authority."""
 
-The Supabase Auth user is the identity source for Phase 1.
-A local user_profiles table will be added in Phase 5 (Database) with:
-    - id (UUID PK)
-    - supabase_user_id (FK → Supabase Auth UUID)
-    - full_name
-    - created_at / updated_at
+from datetime import datetime
+from uuid import UUID, uuid4
 
-Supabase owns identity; FastAPI/Postgres owns application data.
-"""
+from sqlalchemy import DateTime, String
+from sqlalchemy.orm import Mapped, mapped_column
 
-# Phase 5 will activate SQLAlchemy models.
-# from sqlalchemy import Column, DateTime, String
-# from sqlalchemy.dialects.postgresql import UUID
-# from sqlalchemy.orm import DeclarativeBase
-# import uuid, datetime
+from app.db.base import Base
 
-# class UserProfile(Base):
-#     __tablename__ = "user_profiles"
-#     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-#     supabase_user_id = Column(String, unique=True, nullable=False, index=True)
-#     full_name = Column(String(100), nullable=True)
-#     created_at = Column(DateTime, default=datetime.datetime.utcnow)
-#     updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
+class UserProfile(Base):
+    __tablename__ = "user_profiles"
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    supabase_user_id: Mapped[str] = mapped_column(String(36), unique=True, index=True)
+    full_name: Mapped[str] = mapped_column(String(100), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )

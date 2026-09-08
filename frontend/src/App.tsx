@@ -11,16 +11,13 @@ import PlaceholderPage from "./pages/PlaceholderPage.tsx";
 
 // Auth
 import { ProtectedRoute } from "./components/auth/ProtectedRoute.tsx";
-import { useAuthStore } from "./features/auth/authStore.ts";
+import { useAuthStore } from "./store/authStore.ts";
 
 function App() {
   const initialize = useAuthStore((s) => s.initialize);
 
-  // Restore Supabase session on app load and subscribe to auth state changes.
-  // Returns an unsubscribe function for cleanup.
   useEffect(() => {
-    const unsubscribe = initialize();
-    return unsubscribe;
+    initialize();
   }, [initialize]);
 
   return (
