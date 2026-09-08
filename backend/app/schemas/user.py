@@ -10,6 +10,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel, EmailStr, Field, model_validator
 
+from app.core.sanitization import sanitize_text
+
 
 class UserRead(BaseModel):
     """Safe public representation of an authenticated user.
@@ -28,6 +30,13 @@ class RegisterRequest(BaseModel):
     email: EmailStr
     password: str = Field(..., min_length=8, description="Minimum 8 characters.")
     full_name: str = Field(..., min_length=1, max_length=100)
+
+    @model_validator(mode="after")
+    def sanitize_full_name(self) -> "RegisterRequest":
+        self.full_name = sanitize_text(self.full_name, max_length=100)
+        if not self.full_name:
+            raise ValueError("full_name must contain text")
+        return self
 
 
 class LoginRequest(BaseModel):

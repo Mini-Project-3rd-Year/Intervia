@@ -16,7 +16,7 @@ Routes:
 
 import logging
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from supabase import AuthApiError
 
 from app.api.deps import get_current_user
@@ -28,6 +28,7 @@ from app.schemas.user import (
     TokenResponse,
     UserRead,
 )
+from app.core.rate_limit import limiter
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -54,7 +55,8 @@ def _build_token_response(session, supabase_user) -> TokenResponse:
     summary="Register a new user",
     description="Creates a user in Supabase Auth and returns access + refresh tokens.",
 )
-async def register(payload: RegisterRequest) -> TokenResponse:
+@limiter.limit("10/minute")
+async def register(request: Request, payload: RegisterRequest) -> TokenResponse:
     """
     POST /api/v1/auth/register
 
@@ -101,7 +103,8 @@ async def register(payload: RegisterRequest) -> TokenResponse:
     summary="Login with email and password",
     description="Authenticates via Supabase Auth. Returns access + refresh tokens.",
 )
-async def login(payload: LoginRequest) -> TokenResponse:
+@limiter.limit("10/minute")
+async def login(request: Request, payload: LoginRequest) -> TokenResponse:
     """
     POST /api/v1/auth/login
 
@@ -137,7 +140,8 @@ async def login(payload: LoginRequest) -> TokenResponse:
     summary="Refresh access token",
     description="Exchanges a valid Supabase refresh token for a new access token.",
 )
-async def refresh_token(payload: RefreshRequest) -> TokenResponse:
+@limiter.limit("10/minute")
+async def refresh_token(request: Request, payload: RefreshRequest) -> TokenResponse:
     """
     POST /api/v1/auth/refresh
 
@@ -170,7 +174,8 @@ async def refresh_token(payload: RefreshRequest) -> TokenResponse:
     summary="Logout current user",
     description="Invalidates the Supabase session. The client must discard stored tokens.",
 )
-async def logout(current_user: UserRead = Depends(get_current_user)) -> None:
+@limiter.limit("10/minute")
+async def logout(request: Request, current_user: UserRead = Depends(get_current_user)) -> None:
     """
     POST /api/v1/auth/logout
 

@@ -7,23 +7,19 @@
  */
 
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../features/auth/authStore";
+import { useAuthStore } from "../store/authStore";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
+  const { user, clearAuth } = useAuthStore();
 
-  const fullName =
-    (user?.user_metadata?.full_name as string | undefined) ||
-    user?.email ||
-    "User";
+  const fullName = user?.full_name || user?.email || "User";
 
   const handleLogout = async () => {
     try {
-      await logout();
+      clearAuth();
       navigate("/login", { replace: true });
     } catch {
-      // logout errors are non-critical — navigate anyway
       navigate("/login", { replace: true });
     }
   };
