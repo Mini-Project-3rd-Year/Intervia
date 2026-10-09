@@ -73,11 +73,13 @@ export default function RegisterPage() {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        {/* Logo / Brand */}
-        <div className="auth-brand">
-          <span className="auth-brand-icon">🎯</span>
-          <span className="auth-brand-name">Intervia</span>
-        </div>
+        {/* Brand */}
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <div className="auth-brand">
+            <div style={{ width: 30, height: 30, borderRadius: 8, background: "var(--blue)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, color: "white", fontSize: "0.875rem", flexShrink: 0 }}>I</div>
+            <span className="auth-brand-name">Intervia</span>
+          </div>
+        </Link>
 
         <h1 className="auth-title">Create your account</h1>
         <p className="auth-subtitle">Start your AI-powered interview journey</p>
@@ -108,6 +110,7 @@ export default function RegisterPage() {
               className="auth-input"
               required
               disabled={submitting}
+              aria-required="true"
             />
           </div>
 
@@ -125,6 +128,7 @@ export default function RegisterPage() {
               className="auth-input"
               required
               disabled={submitting}
+              aria-required="true"
             />
           </div>
 
@@ -143,6 +147,7 @@ export default function RegisterPage() {
               className="auth-input"
               required
               disabled={submitting}
+              aria-required="true"
             />
           </div>
 
@@ -160,6 +165,7 @@ export default function RegisterPage() {
               className="auth-input"
               required
               disabled={submitting}
+              aria-required="true"
             />
           </div>
 
@@ -168,8 +174,34 @@ export default function RegisterPage() {
             type="submit"
             className="auth-btn auth-btn-primary"
             disabled={submitting}
+            aria-label="Create your Intervia account"
           >
             {submitting ? "Creating account…" : "Create Account"}
+          </button>
+
+          <div className="auth-divider"><span>or</span></div>
+
+          <button
+            id="register-demo"
+            type="button"
+            className="auth-btn auth-btn-demo"
+            disabled={submitting}
+            aria-label="Sign in as a guest for a quick demo"
+            onClick={async () => {
+              setSubmitting(true);
+              clearError();
+              try {
+                const { loginDemo } = useAuthStore.getState();
+                await loginDemo();
+                navigate("/dashboard", { replace: true });
+              } catch {
+                // error handled in store
+              } finally {
+                setSubmitting(false);
+              }
+            }}
+          >
+            Try Demo — No Account Needed
           </button>
         </form>
 

@@ -1,553 +1,511 @@
+/**
+ * frontend/src/pages/LandingPage.tsx
+ * Redesigned landing page — clean, modern SaaS aesthetic.
+ * Preserves all existing routing and links.
+ */
+
 import { Link } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
 
-/* ---- Feature cards data ---------------------------------- */
+/* ── Feature data ──────────────────────────────────────── */
 const features = [
   {
-    icon: "🧠",
+    icon: "⬡",
     title: "Resume Intelligence",
-    description:
-      "AI extracts every skill, project, and achievement from your resume and builds a structured candidate profile.",
-    phase: "Phase 2",
-    color: "#3b82f6",
+    description: "Upload your resume and watch AI extract every skill, project, and achievement to build a structured candidate profile.",
+    color: "var(--blue)",
   },
   {
-    icon: "🎯",
+    icon: "⊕",
+    title: "Adaptive Interviews",
+    description: "Questions adapt to your answers in real time. Every session feels like a real interview — because it is.",
+    color: "var(--violet)",
+  },
+  {
+    icon: "◈",
+    title: "Smart Evaluation",
+    description: "Get scored across technical knowledge, communication, problem-solving, and confidence — not just right or wrong.",
+    color: "var(--cyan)",
+  },
+  {
+    icon: "✦",
+    title: "AI Coach",
+    description: "Receive a personalized improvement plan with specific topics, practice questions, and timelines — not generic advice.",
+    color: "var(--green)",
+  },
+  {
+    icon: "⌖",
     title: "Job Matching",
-    description:
-      "Upload a job description and instantly see matched skills, gaps, and tailored interview strategies.",
-    phase: "Phase 3",
-    color: "#06b6d4",
+    description: "Paste a job description. See exactly which skills match your profile and which gaps to close before the interview.",
+    color: "var(--amber)",
   },
   {
-    icon: "🤖",
-    title: "Adaptive Interview Agent",
-    description:
-      "LangGraph-powered AI that adjusts difficulty, probes weak areas, and generates contextual follow-ups in real time.",
-    phase: "Phase 7",
-    color: "#8b5cf6",
-  },
-  {
-    icon: "🗣️",
-    title: "3D AI Interviewer",
-    description:
-      "Interview with a lifelike 3D avatar that speaks, listens, and reacts — powered by TTS and lip synchronization.",
-    phase: "Phase 12",
-    color: "#06b6d4",
-  },
-  {
-    icon: "✅",
-    title: "Skill Verification",
-    description:
-      "Claims on your resume are verified through targeted technical questions. Observed vs claimed skill analysis.",
-    phase: "Phase 10",
-    color: "#3b82f6",
-  },
-  {
-    icon: "📊",
-    title: "Interview Readiness Score",
-    description:
-      "Multi-dimensional scoring across technical accuracy, communication, behavioral skills, and problem solving.",
-    phase: "Phase 14",
-    color: "#8b5cf6",
-  },
-  {
-    icon: "💡",
-    title: "AI Career Coach",
-    description:
-      "Evidence-based personalized improvement plan with recommended topics, practice questions, and timelines.",
-    phase: "Phase 15",
-    color: "#06b6d4",
-  },
-  {
-    icon: "📈",
+    icon: "◷",
     title: "Progress Tracking",
-    description:
-      "Track your growth across interviews. See score trends, skill improvements, and weak areas over time.",
-    phase: "Phase 16",
-    color: "#3b82f6",
+    description: "Track readiness over time. See your scores trend upward as you practice and improve across sessions.",
+    color: "var(--blue)",
   },
 ];
 
-/* ---- Workflow steps -------------------------------------- */
-const workflowSteps = [
-  { step: "01", label: "Upload Resume", description: "PDF parsing + structured extraction" },
-  { step: "02", label: "Add Job Description", description: "Skill matching & gap analysis" },
-  { step: "03", label: "Configure Interview", description: "Type, difficulty, and duration" },
-  { step: "04", label: "Interview with AI", description: "Voice + 3D adaptive session" },
-  { step: "05", label: "Get Evaluated", description: "Multi-dimensional scoring" },
-  { step: "06", label: "Coach & Improve", description: "Personalized practice plan" },
+/* ── Journey steps ─────────────────────────────────────── */
+const steps = [
+  { n: "01", icon: "▤", title: "Upload Resume",        desc: "AI parses your experience and skills" },
+  { n: "02", icon: "⌖", title: "Match Your Role",      desc: "Identify skill gaps for your target job" },
+  { n: "03", icon: "⚙", title: "Configure Interview",  desc: "Choose type, difficulty, and duration" },
+  { n: "04", icon: "◉", title: "Practice With AI",     desc: "Adaptive voice or text-based session" },
+  { n: "05", icon: "◈", title: "Get Feedback",         desc: "Scored breakdown with clear insights" },
+  { n: "06", icon: "✦", title: "Improve",              desc: "Personalized coaching plan to grow" },
 ];
 
-/* ---- Stats ----------------------------------------------- */
-const stats = [
-  { value: "10+", label: "Interview Types" },
-  { value: "24", label: "Development Phases" },
-  { value: "AI", label: "Adaptive Engine" },
-  { value: "3D", label: "Avatar Interface" },
+/* ── Trust items ────────────────────────────────────────── */
+const trustItems = [
+  "Resume-aware questions",
+  "Adaptive difficulty",
+  "Instant feedback",
+  "Personalized coaching",
 ];
 
+/* ── Mock dashboard preview ──────────────────────────────── */
+const MockDashboard = () => (
+  <div
+    aria-hidden="true"
+    style={{
+      background: "var(--bg-surface)",
+      border: "1px solid var(--border-default)",
+      borderRadius: "var(--r-xl)",
+      padding: "1.25rem",
+      width: "100%",
+      maxWidth: 440,
+      boxShadow: "var(--shadow-lg)",
+      overflow: "hidden",
+    }}
+  >
+    {/* Top bar */}
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <div style={{ width: 24, height: 24, borderRadius: 6, background: "var(--blue)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", fontWeight: 800, color: "white" }}>I</div>
+        <span style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--text-primary)" }}>Intervia</span>
+      </div>
+      <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Dashboard</div>
+    </div>
+
+    {/* Readiness score */}
+    <div style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-default)", borderRadius: "var(--r-lg)", padding: "1.125rem", marginBottom: "0.875rem" }}>
+      <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.75rem", fontWeight: 500 }}>Interview Readiness</div>
+      <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+        {/* Mini ring */}
+        <svg width="56" height="56" viewBox="0 0 56 56">
+          <circle cx="28" cy="28" r="22" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="5"/>
+          <circle cx="28" cy="28" r="22" fill="none" stroke="var(--blue)" strokeWidth="5"
+            strokeDasharray={`${2 * Math.PI * 22 * 0.72} ${2 * Math.PI * 22}`}
+            strokeLinecap="round" transform="rotate(-90 28 28)"/>
+          <text x="28" y="32" textAnchor="middle" fill="var(--text-primary)" fontSize="11" fontWeight="800">72%</text>
+        </svg>
+        <div>
+          <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-0.03em" }}>72%</div>
+          <div style={{ fontSize: "0.75rem", color: "var(--green)", fontWeight: 500 }}>↑ 8% this month</div>
+          <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "0.125rem" }}>3 interviews completed</div>
+        </div>
+      </div>
+    </div>
+
+    {/* Skill bars */}
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.625rem", marginBottom: "0.875rem" }}>
+      {[
+        { name: "React & TypeScript", score: 90, color: "var(--blue)" },
+        { name: "Problem Solving", score: 82, color: "var(--violet)" },
+        { name: "Communication", score: 68, color: "var(--cyan)" },
+        { name: "System Design", score: 55, color: "var(--amber)" },
+      ].map((s) => (
+        <div key={s.name}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem" }}>
+            <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>{s.name}</span>
+            <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-primary)" }}>{s.score}%</span>
+          </div>
+          <div style={{ height: 4, background: "rgba(255,255,255,0.07)", borderRadius: 100, overflow: "hidden" }}>
+            <div style={{ height: "100%", width: `${s.score}%`, background: s.color, borderRadius: 100 }}/>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Recent */}
+    <div style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-default)", borderRadius: "var(--r-md)", padding: "0.75rem 1rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div>
+        <div style={{ fontSize: "0.8125rem", fontWeight: 600, color: "var(--text-primary)" }}>Frontend Developer</div>
+        <div style={{ fontSize: "0.725rem", color: "var(--text-muted)" }}>Technical · Sep 29</div>
+      </div>
+      <span style={{ fontSize: "1rem", fontWeight: 800, color: "var(--green)" }}>78%</span>
+    </div>
+  </div>
+);
+
+/* ── Main Component ─────────────────────────────────────── */
 const LandingPage = () => {
   return (
-    <div style={{ minHeight: "100vh", background: "#050c1a", overflowX: "hidden" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg-base)", overflowX: "hidden" }}>
       <Navbar />
 
-      {/* ---- HERO SECTION ----------------------------------- */}
+      {/* ── HERO ─────────────────────────────────────────── */}
       <section
         style={{
           minHeight: "100vh",
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
-          padding: "8rem 2rem 4rem",
-          position: "relative",
-          textAlign: "center",
+          padding: "5rem 2rem 4rem",
+          maxWidth: 1200,
+          margin: "0 auto",
         }}
       >
-        {/* Background orbs */}
-        <div
-          style={{
-            position: "absolute",
-            top: "15%",
-            left: "20%",
-            width: "500px",
-            height: "500px",
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: "30%",
-            right: "15%",
-            width: "400px",
-            height: "400px",
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: "20%",
-            left: "35%",
-            width: "300px",
-            height: "300px",
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }}
-        />
-
-        {/* Badge */}
-        <div
-          className="animate-fade-in-up"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            background: "rgba(37, 99, 235, 0.12)",
-            border: "1px solid rgba(37, 99, 235, 0.25)",
-            borderRadius: "100px",
-            padding: "0.375rem 1.25rem",
-            marginBottom: "2rem",
-          }}
-        >
+        {/* Left — copy */}
+        <div style={{ flex: "1 1 500px", maxWidth: 560 }}>
+          {/* Badge */}
           <div
-            className="pulse-dot"
-            style={{
-              width: "7px",
-              height: "7px",
-              borderRadius: "50%",
-              background: "#22d3ee",
-            }}
-          />
-          <span
-            style={{
-              fontSize: "0.8rem",
-              fontWeight: 600,
-              color: "#60a5fa",
-              letterSpacing: "0.06em",
-              textTransform: "uppercase" as const,
-            }}
+            className="badge badge-blue anim-fade-up"
+            style={{ marginBottom: "1.75rem", display: "inline-flex" }}
           >
-            AI-Powered Interview Platform
-          </span>
-        </div>
+            <span className="pulse-dot" style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--cyan)", flexShrink: 0 }}/>
+            AI-Powered Interview Preparation
+          </div>
 
-        {/* Headline */}
-        <h1
-          className="animate-fade-in-up-delay-1"
-          style={{
-            fontSize: "clamp(2.75rem, 6vw, 5rem)",
-            fontWeight: 900,
-            lineHeight: 1.05,
-            letterSpacing: "-0.04em",
-            maxWidth: "820px",
-            marginBottom: "1.5rem",
-          }}
-        >
-          <span style={{ color: "white" }}>Master Every </span>
-          <span className="gradient-text">Interview</span>
-          <br />
-          <span style={{ color: "white" }}>with Adaptive </span>
-          <span className="gradient-text-blue">AI Coaching</span>
-        </h1>
-
-        {/* Subheading */}
-        <p
-          className="animate-fade-in-up-delay-2"
-          style={{
-            fontSize: "1.2rem",
-            color: "rgba(255,255,255,0.55)",
-            maxWidth: "600px",
-            lineHeight: 1.65,
-            marginBottom: "3rem",
-          }}
-        >
-          Intervia analyzes your resume and target job, then conducts a
-          personalized adaptive interview through a 3D AI interviewer.
-          Get evidence-based feedback and a custom improvement plan.
-        </p>
-
-        {/* CTA buttons */}
-        <div
-          className="animate-fade-in-up-delay-3"
-          style={{ display: "flex", gap: "1rem", flexWrap: "wrap" as const, justifyContent: "center" }}
-        >
-          <Link to="/register" style={{ textDecoration: "none" }}>
-            <button
-              className="btn-primary"
-              style={{ fontSize: "1rem", padding: "0.875rem 2.25rem" }}
-            >
-              Start Your Interview →
-            </button>
-          </Link>
-          <Link to="/dashboard" style={{ textDecoration: "none" }}>
-            <button
-              className="btn-secondary"
-              style={{ fontSize: "1rem", padding: "0.875rem 2.25rem" }}
-            >
-              View Dashboard
-            </button>
-          </Link>
-        </div>
-
-        {/* Stats row */}
-        <div
-          className="animate-fade-in-up-delay-4"
-          style={{
-            display: "flex",
-            gap: "3rem",
-            marginTop: "4.5rem",
-            flexWrap: "wrap" as const,
-            justifyContent: "center",
-          }}
-        >
-          {stats.map((stat) => (
-            <div key={stat.label} style={{ textAlign: "center" }}>
-              <div
-                className="gradient-text"
-                style={{
-                  fontSize: "2rem",
-                  fontWeight: 800,
-                  letterSpacing: "-0.03em",
-                }}
-              >
-                {stat.value}
-              </div>
-              <div
-                style={{
-                  fontSize: "0.8rem",
-                  color: "rgba(255,255,255,0.4)",
-                  fontWeight: 500,
-                  marginTop: "0.25rem",
-                  textTransform: "uppercase" as const,
-                  letterSpacing: "0.06em",
-                }}
-              >
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ---- WORKFLOW SECTION ------------------------------- */}
-      <section
-        style={{
-          padding: "5rem 2rem",
-          maxWidth: "1100px",
-          margin: "0 auto",
-        }}
-      >
-        {/* Section header */}
-        <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
-          <p
+          {/* Headline */}
+          <h1
+            className="anim-fade-up anim-delay-1"
             style={{
-              fontSize: "0.75rem",
-              fontWeight: 700,
-              color: "#06b6d4",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase" as const,
-              marginBottom: "0.75rem",
-            }}
-          >
-            How It Works
-          </p>
-          <h2
-            style={{
-              fontSize: "clamp(1.75rem, 3vw, 2.75rem)",
+              fontSize: "clamp(2.25rem, 5vw, 3.625rem)",
               fontWeight: 800,
-              color: "white",
-              letterSpacing: "-0.03em",
-              lineHeight: 1.15,
+              lineHeight: 1.08,
+              letterSpacing: "-0.04em",
+              marginBottom: "1.25rem",
             }}
           >
-            From Resume to{" "}
-            <span className="gradient-text">Interview Ready</span>
-          </h2>
-        </div>
+            Practice Smarter.{" "}
+            <span className="text-gradient">Interview Better.</span>
+          </h1>
 
-        {/* Steps grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "1.25rem",
-          }}
-        >
-          {workflowSteps.map((item, idx) => (
-            <div
-              key={item.step}
-              className="card"
-              style={{
-                display: "flex",
-                gap: "1.25rem",
-                alignItems: "flex-start",
-                animationDelay: `${idx * 0.08}s`,
-              }}
-            >
-              <div
-                style={{
-                  minWidth: "48px",
-                  height: "48px",
-                  borderRadius: "12px",
-                  background: "linear-gradient(135deg, rgba(37,99,235,0.2), rgba(6,182,212,0.2))",
-                  border: "1px solid rgba(37,99,235,0.3)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "0.8rem",
-                  fontWeight: 800,
-                  color: "#60a5fa",
-                  letterSpacing: "0.05em",
-                }}
-              >
-                {item.step}
-              </div>
-              <div>
-                <h3
-                  style={{
-                    fontSize: "1rem",
-                    fontWeight: 700,
-                    color: "white",
-                    marginBottom: "0.375rem",
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  {item.label}
-                </h3>
-                <p
-                  style={{
-                    fontSize: "0.85rem",
-                    color: "rgba(255,255,255,0.45)",
-                    lineHeight: 1.5,
-                  }}
-                >
-                  {item.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ---- FEATURES SECTION ------------------------------ */}
-      <section
-        style={{
-          padding: "5rem 2rem",
-          maxWidth: "1200px",
-          margin: "0 auto",
-        }}
-      >
-        {/* Section header */}
-        <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
+          {/* Supporting text */}
           <p
+            className="anim-fade-up anim-delay-2"
             style={{
-              fontSize: "0.75rem",
-              fontWeight: 700,
-              color: "#8b5cf6",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase" as const,
-              marginBottom: "0.75rem",
-            }}
-          >
-            Platform Features
-          </p>
-          <h2
-            style={{
-              fontSize: "clamp(1.75rem, 3vw, 2.75rem)",
-              fontWeight: 800,
-              color: "white",
-              letterSpacing: "-0.03em",
-            }}
-          >
-            Everything You Need to{" "}
-            <span className="gradient-text">Ace Your Interview</span>
-          </h2>
-        </div>
-
-        {/* Features grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "1.25rem",
-          }}
-        >
-          {features.map((feature) => (
-            <div key={feature.title} className="card glass-hover">
-              {/* Icon + badge row */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginBottom: "1rem",
-                }}
-              >
-                <div
-                  style={{
-                    width: "46px",
-                    height: "46px",
-                    borderRadius: "12px",
-                    background: `${feature.color}1a`,
-                    border: `1px solid ${feature.color}33`,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "1.375rem",
-                  }}
-                >
-                  {feature.icon}
-                </div>
-                <span
-                  style={{
-                    fontSize: "0.7rem",
-                    fontWeight: 600,
-                    color: feature.color,
-                    background: `${feature.color}18`,
-                    border: `1px solid ${feature.color}30`,
-                    borderRadius: "100px",
-                    padding: "0.25rem 0.75rem",
-                    letterSpacing: "0.04em",
-                    textTransform: "uppercase" as const,
-                  }}
-                >
-                  {feature.phase}
-                </span>
-              </div>
-
-              {/* Text */}
-              <h3
-                style={{
-                  fontSize: "1.05rem",
-                  fontWeight: 700,
-                  color: "white",
-                  marginBottom: "0.5rem",
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                {feature.title}
-              </h3>
-              <p
-                style={{
-                  fontSize: "0.875rem",
-                  color: "rgba(255,255,255,0.48)",
-                  lineHeight: 1.6,
-                }}
-              >
-                {feature.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ---- TECH STACK SECTION ----------------------------- */}
-      <section
-        style={{
-          padding: "4rem 2rem",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
-          background: "rgba(255,255,255,0.015)",
-        }}
-      >
-        <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center" }}>
-          <p
-            style={{
-              fontSize: "0.75rem",
-              fontWeight: 600,
-              color: "rgba(255,255,255,0.3)",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase" as const,
+              fontSize: "1.0625rem",
+              color: "var(--text-secondary)",
+              lineHeight: 1.65,
+              maxWidth: 460,
               marginBottom: "2rem",
             }}
           >
-            Built with industry-grade technology
+            Turn your resume and target role into personalized AI interviews,
+            instant feedback, and a focused coaching plan.
           </p>
+
+          {/* Trust row */}
           <div
+            className="anim-fade-up anim-delay-3"
             style={{
               display: "flex",
-              flexWrap: "wrap" as const,
+              flexWrap: "wrap",
               gap: "0.75rem",
-              justifyContent: "center",
+              marginBottom: "2.25rem",
             }}
           >
+            {trustItems.map((item) => (
+              <div
+                key={item}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.375rem",
+                  fontSize: "0.8375rem",
+                  color: "var(--text-secondary)",
+                  fontWeight: 500,
+                }}
+              >
+                <span style={{ color: "var(--green)", fontWeight: 700 }}>✓</span>
+                {item}
+              </div>
+            ))}
+          </div>
+
+          {/* CTA buttons */}
+          <div
+            className="anim-fade-up anim-delay-4"
+            style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}
+          >
+            <Link to="/register" style={{ textDecoration: "none" }}>
+              <button className="btn btn-primary btn-xl" id="hero-cta-primary">
+                Start Practicing
+              </button>
+            </Link>
+            <a href="#how-it-works" style={{ textDecoration: "none" }}>
+              <button className="btn btn-secondary btn-xl" id="hero-cta-secondary">
+                See How It Works
+              </button>
+            </a>
+          </div>
+        </div>
+
+        {/* Right — mock dashboard */}
+        <div
+          className="anim-fade-up anim-delay-5"
+          style={{
+            flex: "1 1 400px",
+            display: "flex",
+            justifyContent: "center",
+            paddingLeft: "3rem",
+          }}
+        >
+          <MockDashboard />
+        </div>
+      </section>
+
+      {/* ── HOW IT WORKS ─────────────────────────────────── */}
+      <section
+        id="how-it-works"
+        style={{
+          padding: "5rem 2rem",
+          borderTop: "1px solid var(--border-subtle)",
+          background: "var(--bg-surface)",
+        }}
+      >
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          {/* Header */}
+          <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
+            <p style={{
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              color: "var(--cyan)",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              marginBottom: "0.625rem",
+            }}>
+              The Journey
+            </p>
+            <h2 style={{
+              fontSize: "clamp(1.625rem, 3vw, 2.25rem)",
+              fontWeight: 800,
+              letterSpacing: "-0.03em",
+            }}>
+              From Resume to{" "}
+              <span className="text-gradient-blue">Interview Ready</span>
+            </h2>
+          </div>
+
+          {/* Steps */}
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+            gap: "1rem",
+            position: "relative",
+          }}>
+            {steps.map((step, i) => (
+              <div
+                key={step.n}
+                style={{
+                  position: "relative",
+                  background: "var(--bg-elevated)",
+                  border: "1px solid var(--border-default)",
+                  borderRadius: "var(--r-lg)",
+                  padding: "1.25rem 1rem",
+                  textAlign: "center",
+                  transition: "border-color 0.2s, transform 0.2s",
+                  animationDelay: `${i * 0.06}s`,
+                }}
+                className="anim-fade-up"
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(59,130,246,0.3)";
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "var(--border-default)";
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                }}
+              >
+                {/* Number */}
+                <div style={{
+                  fontSize: "0.6875rem",
+                  fontWeight: 700,
+                  color: "var(--blue)",
+                  letterSpacing: "0.06em",
+                  marginBottom: "0.625rem",
+                }}>
+                  {step.n}
+                </div>
+
+                {/* Icon */}
+                <div style={{
+                  width: 40, height: 40,
+                  borderRadius: "var(--r-md)",
+                  background: "var(--blue-dim)",
+                  border: "1px solid var(--blue-border)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "1.125rem",
+                  color: "#93C5FD",
+                  margin: "0 auto 0.75rem",
+                }}>
+                  {step.icon}
+                </div>
+
+                <div style={{
+                  fontSize: "0.875rem",
+                  fontWeight: 700,
+                  color: "var(--text-primary)",
+                  marginBottom: "0.3rem",
+                  letterSpacing: "-0.01em",
+                }}>
+                  {step.title}
+                </div>
+                <div style={{
+                  fontSize: "0.775rem",
+                  color: "var(--text-muted)",
+                  lineHeight: 1.45,
+                }}>
+                  {step.desc}
+                </div>
+
+                {/* Connector dot */}
+                {i < steps.length - 1 && (
+                  <div style={{
+                    position: "absolute",
+                    top: "50%",
+                    right: -8,
+                    transform: "translateY(-50%)",
+                    width: 14, height: 14,
+                    borderRadius: "50%",
+                    background: "var(--bg-surface)",
+                    border: "2px solid var(--border-strong)",
+                    zIndex: 1,
+                  }}/>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* CTA below steps */}
+          <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
+            <Link to="/register" style={{ textDecoration: "none" }}>
+              <button className="btn btn-primary btn-lg" id="journey-cta">
+                Start Your First Session
+              </button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FEATURES ─────────────────────────────────────── */}
+      <section
+        id="features"
+        style={{ padding: "5rem 2rem" }}
+      >
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          {/* Header */}
+          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+            <p style={{
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              color: "var(--violet)",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              marginBottom: "0.625rem",
+            }}>
+              What You Get
+            </p>
+            <h2 style={{
+              fontSize: "clamp(1.625rem, 3vw, 2.25rem)",
+              fontWeight: 800,
+              letterSpacing: "-0.03em",
+            }}>
+              Everything to{" "}
+              <span className="text-gradient">Ace Your Interview</span>
+            </h2>
+          </div>
+
+          {/* Feature grid */}
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(310px, 1fr))",
+            gap: "1rem",
+          }}>
+            {features.map((f, i) => (
+              <div
+                key={f.title}
+                className="card card-hover anim-fade-up"
+                style={{ animationDelay: `${i * 0.07}s` }}
+              >
+                {/* Icon */}
+                <div style={{
+                  width: 40, height: 40,
+                  borderRadius: "var(--r-md)",
+                  background: `${f.color}18`,
+                  border: `1px solid ${f.color}30`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "1.125rem",
+                  color: f.color,
+                  marginBottom: "1rem",
+                }}>
+                  {f.icon}
+                </div>
+
+                <h3 style={{
+                  fontSize: "0.9375rem",
+                  fontWeight: 700,
+                  color: "var(--text-primary)",
+                  marginBottom: "0.4rem",
+                  letterSpacing: "-0.01em",
+                }}>
+                  {f.title}
+                </h3>
+                <p style={{
+                  fontSize: "0.84375rem",
+                  color: "var(--text-secondary)",
+                  lineHeight: 1.6,
+                }}>
+                  {f.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── TECH STRIP ───────────────────────────────────── */}
+      <section
+        style={{
+          padding: "3rem 2rem",
+          borderTop: "1px solid var(--border-subtle)",
+          borderBottom: "1px solid var(--border-subtle)",
+          background: "var(--bg-surface)",
+        }}
+      >
+        <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
+          <p style={{
+            fontSize: "0.75rem",
+            fontWeight: 600,
+            color: "var(--text-muted)",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            marginBottom: "1.5rem",
+          }}>
+            Built with production-grade technology
+          </p>
+          <div style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.625rem",
+            justifyContent: "center",
+          }}>
             {[
-              "React", "TypeScript", "Vite", "Tailwind CSS",
-              "Three.js", "React Three Fiber", "Python",
-              "FastAPI", "LangGraph", "Gemini AI",
-              "PostgreSQL", "pgvector", "Supabase",
+              "React", "TypeScript", "FastAPI", "LangGraph",
+              "Gemini AI", "PostgreSQL", "pgvector", "Supabase",
               "WebSockets", "Docker",
             ].map((tech) => (
               <span
                 key={tech}
-                style={{
-                  padding: "0.375rem 1rem",
-                  borderRadius: "100px",
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  fontSize: "0.8rem",
-                  color: "rgba(255,255,255,0.6)",
-                  fontWeight: 500,
-                  transition: "all 0.2s ease",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.background = "rgba(255,255,255,0.1)";
-                  el.style.color = "white";
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.background = "rgba(255,255,255,0.05)";
-                  el.style.color = "rgba(255,255,255,0.6)";
-                }}
+                className="badge badge-muted"
+                style={{ fontSize: "0.8125rem", padding: "0.3125rem 0.875rem" }}
               >
                 {tech}
               </span>
@@ -556,81 +514,44 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* ---- CTA SECTION ------------------------------------ */}
-      <section
-        style={{
-          padding: "7rem 2rem",
-          textAlign: "center",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {/* Background glow */}
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "600px",
-            height: "300px",
-            borderRadius: "50%",
-            background: "radial-gradient(ellipse, rgba(37,99,235,0.15) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }}
-        />
-
-        <div style={{ position: "relative", zIndex: 1 }}>
-          <h2
-            style={{
-              fontSize: "clamp(2rem, 4vw, 3.5rem)",
-              fontWeight: 900,
-              color: "white",
-              letterSpacing: "-0.04em",
-              lineHeight: 1.1,
-              marginBottom: "1.25rem",
-            }}
-          >
-            Ready to Become{" "}
-            <span className="gradient-text">Interview Ready?</span>
+      {/* ── CTA ──────────────────────────────────────────── */}
+      <section style={{ padding: "6rem 2rem", textAlign: "center" }}>
+        <div style={{ maxWidth: 560, margin: "0 auto" }}>
+          <h2 style={{
+            fontSize: "clamp(1.875rem, 4vw, 2.75rem)",
+            fontWeight: 800,
+            letterSpacing: "-0.04em",
+            lineHeight: 1.1,
+            marginBottom: "1rem",
+          }}>
+            Ready to become{" "}
+            <span className="text-gradient">interview ready?</span>
           </h2>
-          <p
-            style={{
-              fontSize: "1.1rem",
-              color: "rgba(255,255,255,0.5)",
-              marginBottom: "2.5rem",
-              maxWidth: "480px",
-              margin: "0 auto 2.5rem",
-              lineHeight: 1.6,
-            }}
-          >
-            Upload your resume, connect to a job description, and start
-            your first adaptive AI interview session today.
+          <p style={{
+            fontSize: "1rem",
+            color: "var(--text-secondary)",
+            marginBottom: "2.25rem",
+            lineHeight: 1.65,
+          }}>
+            Upload your resume, connect to a job description, and start your
+            first adaptive AI interview session today.
           </p>
           <Link to="/register" style={{ textDecoration: "none" }}>
-            <button
-              className="btn-primary"
-              style={{
-                fontSize: "1.05rem",
-                padding: "1rem 2.75rem",
-              }}
-            >
+            <button className="btn btn-primary btn-xl" id="bottom-cta">
               Get Started Free →
             </button>
           </Link>
         </div>
       </section>
 
-      {/* ---- FOOTER ----------------------------------------- */}
-      <footer
-        style={{
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-          padding: "2rem",
-          textAlign: "center",
-        }}
-      >
-        <p style={{ color: "rgba(255,255,255,0.25)", fontSize: "0.8rem" }}>
-          © 2025 Intervia — AI-Powered Interview Platform. Built with ❤️ using React, FastAPI & LangGraph.
+      {/* ── FOOTER ────────────────────────────────────────── */}
+      <footer style={{
+        borderTop: "1px solid var(--border-subtle)",
+        padding: "1.75rem 2rem",
+        textAlign: "center",
+      }}>
+        <p style={{ color: "var(--text-muted)", fontSize: "0.8125rem" }}>
+          © 2026 Intervia — AI-Powered Interview Preparation
         </p>
       </footer>
     </div>

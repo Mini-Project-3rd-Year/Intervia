@@ -6,6 +6,7 @@ import LandingPage from "./pages/LandingPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
 import DashboardPage from "./pages/DashboardPage.tsx";
+import InterviewPage from "./pages/InterviewPage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import PlaceholderPage from "./pages/PlaceholderPage.tsx";
 
@@ -56,11 +57,7 @@ function App() {
           path="/interview"
           element={
             <ProtectedRoute>
-              <PlaceholderPage
-                title="Interview Session"
-                description="Adaptive AI interview engine — coming in Phase 7"
-                phase="Phase 7"
-              />
+              <InterviewPage />
             </ProtectedRoute>
           }
         />
@@ -96,6 +93,19 @@ function App() {
                 title="Profile"
                 description="Your account and settings — coming in Phase 1"
                 phase="Phase 1"
+              />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/history"
+          element={
+            <ProtectedRoute>
+              <PlaceholderPage
+                title="Practice History"
+                description="Review all your past interview sessions — coming in Phase 16"
+                phase="Phase 16"
               />
             </ProtectedRoute>
           }
