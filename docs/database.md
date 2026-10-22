@@ -44,7 +44,11 @@ CREATE TABLE resumes (
   user_id       UUID REFERENCES users(id) ON DELETE CASCADE,
   filename      VARCHAR(255) NOT NULL,
   file_url      TEXT NOT NULL,
+  mime_type     VARCHAR(100),
   raw_text      TEXT,
+  parsed_profile JSON,
+  status        VARCHAR(50) NOT NULL DEFAULT 'ready',
+  processed_at  TIMESTAMPTZ,
   created_at    TIMESTAMPTZ DEFAULT NOW()
 );
 ```
