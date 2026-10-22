@@ -4,6 +4,7 @@ Uses pydantic-settings to load from environment variables / .env file.
 """
 
 from functools import lru_cache
+from pathlib import Path
 from typing import List
 
 from pydantic import AnyHttpUrl, field_validator
@@ -71,6 +72,15 @@ class Settings(BaseSettings):
     STORAGE_PROVIDER: str = "local"
     LOCAL_STORAGE_PATH: str = "./uploads"
     MAX_UPLOAD_SIZE_MB: int = 10
+
+    @property
+    def storage_path(self) -> Path:
+        """Resolve storage path reliably regardless of working directory."""
+        path = Path(self.LOCAL_STORAGE_PATH)
+        if path.is_absolute():
+            return path
+        backend_dir = Path(__file__).resolve().parent.parent.parent
+        return (backend_dir / path).resolve()
 
 
 @lru_cache

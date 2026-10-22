@@ -52,56 +52,20 @@ class JobDescription(Base):
     skill_gaps: Mapped[list] = mapped_column(JSON, default=list)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
+# Re-export interview models from modular location to preserve legacy imports
+from app.models.interview import (
+    Interview,
+    InterviewAnswer,
+    InterviewEvaluation,
+    InterviewQuestion,
+)
 
-class Interview(Base):
-    __tablename__ = "interviews"
-
-    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
-    user_id: Mapped[str] = mapped_column(String(36), index=True)
-    resume_id: Mapped[UUID] = mapped_column(nullable=True)
-    job_id: Mapped[UUID] = mapped_column(nullable=True)
-    type: Mapped[str] = mapped_column(String(50))
-    difficulty: Mapped[int] = mapped_column(Integer, default=5)
-    duration: Mapped[int] = mapped_column(Integer, nullable=True)
-    status: Mapped[str] = mapped_column(String(50), default="scheduled")
-    strategy: Mapped[dict] = mapped_column(JSON, nullable=True)
-    started_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
-    completed_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
-    overall_score: Mapped[float] = mapped_column(Numeric(5, 2), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-
-
-class InterviewQuestion(Base):
-    __tablename__ = "interview_questions"
-
-    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
-    interview_id: Mapped[UUID] = mapped_column(ForeignKey("interviews.id"), index=True)
-    question: Mapped[str] = mapped_column(Text)
-    category: Mapped[str] = mapped_column(String(100), nullable=True)
-    difficulty: Mapped[int] = mapped_column(Integer, nullable=True)
-    source: Mapped[str] = mapped_column(String(100), nullable=True)
-    sequence_number: Mapped[int] = mapped_column(Integer)
-    asked_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-
-
-class InterviewAnswer(Base):
-    __tablename__ = "interview_answers"
-
-    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
-    question_id: Mapped[UUID] = mapped_column(ForeignKey("interview_questions.id"), index=True)
-    transcript: Mapped[str] = mapped_column(Text, nullable=True)
-    audio_url: Mapped[str] = mapped_column(Text, nullable=True)
-    duration_seconds: Mapped[int] = mapped_column(Integer, nullable=True)
-    submitted_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-
-
-class InterviewEvaluation(Base):
-    __tablename__ = "interview_evaluations"
-
-    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
-    answer_id: Mapped[UUID] = mapped_column(ForeignKey("interview_answers.id"), unique=True)
-    relevance: Mapped[float] = mapped_column(Numeric(5, 2), default=0)
-    technical_accuracy: Mapped[float] = mapped_column(Numeric(5, 2), default=0)
-    clarity: Mapped[float] = mapped_column(Numeric(5, 2), default=0)
-    feedback: Mapped[str] = mapped_column(Text, default="")
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+__all__ = [
+    "Resume",
+    "CandidateProfile",
+    "JobDescription",
+    "Interview",
+    "InterviewQuestion",
+    "InterviewAnswer",
+    "InterviewEvaluation",
+]

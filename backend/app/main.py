@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi import _rate_limit_exceeded_handler
@@ -16,6 +17,7 @@ from app.core.config import get_settings
 from app.core.logging import get_logger, setup_logging
 from app.core.middleware import SecurityHeadersMiddleware
 from app.core.rate_limit import limiter
+from app.speech.tts import get_audio_storage_dir
 
 
 @asynccontextmanager
@@ -68,6 +70,11 @@ def create_app() -> FastAPI:
     app.state.limiter = limiter
     app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
     app.add_middleware(SlowAPIMiddleware)
+
+    # ---- Static files (audio storage) ---------------------
+    audio_dir = get_audio_storage_dir()
+    audio_dir.mkdir(parents=True, exist_ok=True)
+    app.mount("/static/audio", StaticFiles(directory=str(audio_dir)), name="audio")
 
     # ---- Register routers ---------------------------------
     app.include_router(api_v1_router)
