@@ -16,7 +16,11 @@ class Resume(Base):
     user_id: Mapped[str] = mapped_column(String(36), index=True)
     filename: Mapped[str] = mapped_column(String(255))
     file_url: Mapped[str] = mapped_column(Text, default="")
+    mime_type: Mapped[str] = mapped_column(String(100), nullable=True)
     raw_text: Mapped[str] = mapped_column(Text, nullable=True)
+    parsed_profile: Mapped[dict] = mapped_column(JSON, nullable=True)
+    status: Mapped[str] = mapped_column(String(50), default="ready", server_default="ready")
+    processed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
 

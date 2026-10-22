@@ -7,7 +7,7 @@ from app.api.v1.coaching import router as coaching_router
 from app.api.v1.health import router as health_router
 from app.api.v1.interviews import router as interviews_router
 from app.api.v1.jobs import router as jobs_router
-from app.api.v1.resumes import router as resumes_router
+from app.api.v1.resumes import resume_intelligence_router, router as resumes_router
 
 # All v1 routers are registered here
 api_v1_router = APIRouter(prefix="/api/v1")
@@ -15,6 +15,7 @@ api_v1_router = APIRouter(prefix="/api/v1")
 api_v1_router.include_router(health_router)
 api_v1_router.include_router(auth_router)  # Phase 1: Authentication
 api_v1_router.include_router(resumes_router)
+api_v1_router.include_router(resume_intelligence_router)
 api_v1_router.include_router(jobs_router)
 api_v1_router.include_router(interviews_router)
 api_v1_router.include_router(coaching_router)

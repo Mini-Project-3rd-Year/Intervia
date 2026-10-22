@@ -53,7 +53,17 @@ Returns the current health status of the API.
 ## Phase 2 Endpoints (Resume)
 
 ### `POST /api/v1/resumes`
-Upload and parse a PDF resume.
+Upload and parse a PDF or DOCX resume (maximum size is configured by
+`MAX_UPLOAD_SIZE_MB`). This legacy endpoint returns the resume record.
+
+### `POST /api/v1/resume/upload`
+Upload a PDF or DOCX resume for the Resume Intelligence UI. Requires a valid
+bearer token and returns `resume_id`, `filename`, and processing `status`.
+
+### `GET /api/v1/resume/{resume_id}/profile`
+Extract and return the resume owner's name, skills, and experience count using
+Gemini. Configure `GEMINI_API_KEY` to enable profile extraction; results are
+stored with the resume and reused on later requests.
 
 ### `GET /api/v1/resumes`
 List all resumes for the authenticated user.
