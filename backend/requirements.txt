@@ -31,11 +31,14 @@ alembic==1.13.3
 supabase==2.9.1
 # pydantic[email] already listed above — required for EmailStr validation
 
-# AI / LLM (will be activated in Phase 6)
+# AI / LLM
 # google-generativeai==0.8.3
 # langchain==0.3.4
 langgraph==0.2.38
 # openai==1.51.2
+
+# Speech / TTS
+gtts==2.5.1
 
 # Resume parsing (will be activated in Phase 2)
 pypdf==5.0.1

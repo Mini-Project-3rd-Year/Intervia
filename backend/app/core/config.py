@@ -4,6 +4,7 @@ Uses pydantic-settings to load from environment variables / .env file.
 """
 
 from functools import lru_cache
+from pathlib import Path
 from typing import List
 
 from pydantic import AnyHttpUrl, Field, field_validator
@@ -75,6 +76,15 @@ class Settings(BaseSettings):
     RESUME_DAILY_PROFILE_LIMIT: int = Field(default=5, ge=1)
     RESUME_PROFILE_MAX_CHARS: int = Field(default=20000, ge=3000)
     RESUME_PROFILE_TIMEOUT_SECONDS: int = Field(default=30, ge=1)
+
+    @property
+    def storage_path(self) -> Path:
+        """Resolve storage path reliably regardless of working directory."""
+        path = Path(self.LOCAL_STORAGE_PATH)
+        if path.is_absolute():
+            return path
+        backend_dir = Path(__file__).resolve().parent.parent.parent
+        return (backend_dir / path).resolve()
 
 
 @lru_cache
