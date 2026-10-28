@@ -53,23 +53,7 @@ Returns the current health status of the API.
 ## Phase 2 Endpoints (Resume)
 
 ### `POST /api/v1/resumes`
-Upload and parse a PDF or DOCX resume (maximum size is configured by
-`MAX_UPLOAD_SIZE_MB`). This legacy endpoint returns the resume record and
-does not grant consent for third-party AI processing.
-
-### `POST /api/v1/resume/upload`
-Upload a PDF or DOCX resume for the Resume Intelligence UI. Requires a valid
-bearer token and explicit `consent_to_ai_processing=true` multipart field.
-Returns `resume_id`, `filename`, processing `status`, and a user-facing message.
-Daily per-user upload quotas are configured with `RESUME_DAILY_UPLOAD_LIMIT`.
-
-### `GET /api/v1/resume/{resume_id}/profile`
-Extract and return the resume owner's name, skills, and experience count using
-Gemini. Configure `GEMINI_API_KEY` to enable profile extraction; results are
-stored with the resume and reused on later requests. Profile extraction requires
-the recorded Gemini consent and is subject to `RESUME_DAILY_PROFILE_LIMIT`.
-Resume text is sent to Google's Gemini service only after the user consents in
-the upload UI. Operators must disclose this processing in their privacy notice.
+Upload and parse a PDF resume.
 
 ### `GET /api/v1/resumes`
 List all resumes for the authenticated user.

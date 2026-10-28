@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 from supabase import AuthApiError
 
 from app.core.rate_limit import limiter
-from app.core.file_validation import validate_resume_bytes
+from app.core.file_validation import validate_pdf_bytes
 from app.services.evaluation import score_answer
 from app.main import app
 
@@ -63,11 +63,7 @@ def test_auth_rate_limit_returns_429_after_ten_requests():
 
 def test_executable_renamed_to_pdf_is_rejected():
     try:
-        validate_resume_bytes(
-            b"MZ\x90\x00not a pdf",
-            "application/pdf",
-            max_size_bytes=1024,
-        )
+        validate_pdf_bytes(b"MZ\x90\x00not a pdf", max_size_bytes=1024)
     except Exception as error:
         assert getattr(error, "status_code", None) == 400
     else:

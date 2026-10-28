@@ -310,10 +310,6 @@ cp .env.example .env
 | `STORAGE_PROVIDER` | `local` | Where to store uploaded files: `local` \| `s3` \| `supabase-storage` |
 | `LOCAL_STORAGE_PATH` | `./uploads` | Local directory for file storage (development only) |
 | `MAX_UPLOAD_SIZE_MB` | `10` | Maximum allowed upload size in megabytes |
-| `RESUME_DAILY_UPLOAD_LIMIT` | `10` | Maximum accepted resume uploads per user per UTC day |
-| `RESUME_DAILY_PROFILE_LIMIT` | `5` | Maximum Gemini profile extractions per user per UTC day |
-| `RESUME_PROFILE_MAX_CHARS` | `20000` | Maximum extracted resume characters sent to Gemini |
-| `RESUME_PROFILE_TIMEOUT_SECONDS` | `30` | Gemini request timeout |
 | `AWS_ACCESS_KEY_ID` | — | AWS access key (required when `STORAGE_PROVIDER=s3`) |
 | `AWS_SECRET_ACCESS_KEY` | — | AWS secret key |
 | `AWS_REGION` | `us-east-1` | AWS region for the S3 bucket |
@@ -328,7 +324,6 @@ These variables are exposed to the browser via Vite's `import.meta.env`. They **
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `VITE_API_BASE_URL` | `http://localhost:8000` | Backend base URL. In production, set to your deployed API URL. |
-| `VITE_MAX_UPLOAD_SIZE_MB` | `10` | Frontend upload-size guidance; keep it aligned with backend `MAX_UPLOAD_SIZE_MB`. |
 | `VITE_SUPABASE_URL` | — | Supabase project URL (same as `SUPABASE_URL`) |
 | `VITE_SUPABASE_ANON_KEY` | — | Supabase anon key (same as `SUPABASE_ANON_KEY`) |
 | `VITE_APP_ENV` | `development` | Frontend environment label |

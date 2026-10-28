@@ -4,7 +4,6 @@ from app.models.features import (
 	CandidateProfile,
 	JobDescription,
 	Resume,
-	ResumeUsage,
 )
 from app.models.interview import (
 	Interview,
@@ -22,6 +21,5 @@ __all__ = [
 	"InterviewQuestion",
 	"JobDescription",
 	"Resume",
-	"ResumeUsage",
 	"UserProfile",
 ]
