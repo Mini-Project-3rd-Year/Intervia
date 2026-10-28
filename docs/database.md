@@ -44,8 +44,28 @@ CREATE TABLE resumes (
   user_id       UUID REFERENCES users(id) ON DELETE CASCADE,
   filename      VARCHAR(255) NOT NULL,
   file_url      TEXT NOT NULL,
+  mime_type     VARCHAR(100),
   raw_text      TEXT,
-  created_at    TIMESTAMPTZ DEFAULT NOW()
+  parsed_profile JSON,
+  status        VARCHAR(50) NOT NULL DEFAULT 'ready',
+  ai_processing_consent BOOLEAN NOT NULL DEFAULT FALSE,
+  processed_at  TIMESTAMP WITHOUT TIME ZONE,
+  created_at    TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
+);
+```
+
+`file_url` is a storage key relative to the configured storage root (for example
+`resumes/<uuid>.pdf`), not an absolute server path.
+
+### `resume_daily_usage`
+
+```sql
+CREATE TABLE resume_daily_usage (
+  user_id             VARCHAR(36) NOT NULL,
+  usage_date          DATE NOT NULL,
+  uploads             INTEGER NOT NULL DEFAULT 0,
+  profile_extractions INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (user_id, usage_date)
 );
 ```
 

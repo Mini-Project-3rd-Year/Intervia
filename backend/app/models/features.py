@@ -1,9 +1,9 @@
 """SQLAlchemy models for candidate, job, and interview data."""
 
-from datetime import datetime
+from datetime import date, datetime
 from uuid import UUID, uuid4
 
-from sqlalchemy import DateTime, ForeignKey, Integer, JSON, Numeric, String, Text
+from sqlalchemy import Date, DateTime, ForeignKey, Integer, JSON, Numeric, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -16,8 +16,22 @@ class Resume(Base):
     user_id: Mapped[str] = mapped_column(String(36), index=True)
     filename: Mapped[str] = mapped_column(String(255))
     file_url: Mapped[str] = mapped_column(Text, default="")
-    raw_text: Mapped[str] = mapped_column(Text, nullable=True)
+    mime_type: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    raw_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    parsed_profile: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    status: Mapped[str] = mapped_column(String(50), default="ready", server_default="ready")
+    processed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    ai_processing_consent: Mapped[bool] = mapped_column(default=False, server_default="false")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+
+class ResumeUsage(Base):
+    __tablename__ = "resume_daily_usage"
+
+    user_id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    usage_date: Mapped[date] = mapped_column(Date, primary_key=True)
+    uploads: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    profile_extractions: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
 
 
 class CandidateProfile(Base):

@@ -8,6 +8,7 @@ import RegisterPage from "./pages/RegisterPage.tsx";
 import DashboardPage from "./pages/DashboardPage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import PlaceholderPage from "./pages/PlaceholderPage.tsx";
+import ResumePage from "./pages/ResumePage.tsx";
 
 // Auth
 import { ProtectedRoute } from "./components/auth/ProtectedRoute.tsx";
@@ -41,11 +42,7 @@ function App() {
           path="/resume"
           element={
             <ProtectedRoute>
-              <PlaceholderPage
-                title="Resume Intelligence"
-                description="Upload and analyze your resume — coming in Phase 2"
-                phase="Phase 2"
-              />
+              <ResumePage />
             </ProtectedRoute>
           }
         />
@@ -106,4 +103,3 @@ function App() {
 }
 
 export default App;
-
