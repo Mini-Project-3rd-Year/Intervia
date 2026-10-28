@@ -8,6 +8,7 @@ from pypdf import PdfReader
 
 PDF_MIME_TYPE = "application/pdf"
 DOCX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+MAX_PDF_PAGES = 100
 
 
 def extract_text_from_file(file_path: str, mime_type: str) -> str:
@@ -18,6 +19,8 @@ def extract_text_from_file(file_path: str, mime_type: str) -> str:
 
     if mime_type == PDF_MIME_TYPE:
         reader = PdfReader(str(path))
+        if len(reader.pages) > MAX_PDF_PAGES:
+            raise ValueError(f"PDF exceeds the {MAX_PDF_PAGES}-page limit.")
         return "\n".join(page.extract_text() or "" for page in reader.pages).strip()
     if mime_type == DOCX_MIME_TYPE:
         document = Document(str(path))

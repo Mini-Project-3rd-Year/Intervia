@@ -9,14 +9,26 @@ from fastapi import HTTPException, status
 PDF_SIGNATURE = b"%PDF-"
 DOCX_SIGNATURE = b"PK"
 MAX_DOCX_UNCOMPRESSED_BYTES = 50 * 1024 * 1024
+MAX_DOCX_ARCHIVE_ENTRIES = 1000
+PDF_MIME_TYPE = "application/pdf"
+DOCX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 
 
-def validate_pdf_bytes(content: bytes, *, max_size_bytes: int) -> None:
-    """Reject oversized or non-PDF content regardless of filename or MIME type."""
-    if len(content) > max_size_bytes:
-        raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail="File is too large.")
-    if not content.startswith(PDF_SIGNATURE):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Only valid PDF files are accepted.")
+def detect_resume_mime_type(content: bytes, filename: str, declared_mime_type: str | None) -> str:
+    """Prefer file signatures, falling back to an allowed MIME type or extension."""
+    if content.startswith(PDF_SIGNATURE):
+        return PDF_MIME_TYPE
+    if content.startswith(DOCX_SIGNATURE):
+        return DOCX_MIME_TYPE
+
+    suffix = filename.rpartition(".")[2].lower()
+    if suffix == "pdf":
+        return PDF_MIME_TYPE
+    if suffix == "docx":
+        return DOCX_MIME_TYPE
+    if declared_mime_type in {PDF_MIME_TYPE, DOCX_MIME_TYPE}:
+        return declared_mime_type
+    return declared_mime_type or ""
 
 
 def validate_resume_bytes(content: bytes, mime_type: str, *, max_size_bytes: int) -> None:
@@ -24,17 +36,22 @@ def validate_resume_bytes(content: bytes, mime_type: str, *, max_size_bytes: int
     if len(content) > max_size_bytes:
         raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail="File is too large.")
 
-    if mime_type == "application/pdf":
+    if mime_type == PDF_MIME_TYPE:
         if not content.startswith(PDF_SIGNATURE):
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Only valid PDF files are accepted.")
         return
 
-    if mime_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+    if mime_type == DOCX_MIME_TYPE:
         if not content.startswith(DOCX_SIGNATURE):
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Only valid DOCX files are accepted.")
         try:
             with ZipFile(BytesIO(content)) as archive:
                 entries = archive.infolist()
+                if len(entries) > MAX_DOCX_ARCHIVE_ENTRIES:
+                    raise HTTPException(
+                        status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                        detail="The DOCX archive contains too many entries.",
+                    )
                 valid_docx = {
                     "[Content_Types].xml",
                     "word/document.xml",

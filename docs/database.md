@@ -48,8 +48,24 @@ CREATE TABLE resumes (
   raw_text      TEXT,
   parsed_profile JSON,
   status        VARCHAR(50) NOT NULL DEFAULT 'ready',
-  processed_at  TIMESTAMPTZ,
-  created_at    TIMESTAMPTZ DEFAULT NOW()
+  ai_processing_consent BOOLEAN NOT NULL DEFAULT FALSE,
+  processed_at  TIMESTAMP WITHOUT TIME ZONE,
+  created_at    TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
+);
+```
+
+`file_url` is a storage key relative to the configured storage root (for example
+`resumes/<uuid>.pdf`), not an absolute server path.
+
+### `resume_daily_usage`
+
+```sql
+CREATE TABLE resume_daily_usage (
+  user_id             VARCHAR(36) NOT NULL,
+  usage_date          DATE NOT NULL,
+  uploads             INTEGER NOT NULL DEFAULT 0,
+  profile_extractions INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (user_id, usage_date)
 );
 ```
 

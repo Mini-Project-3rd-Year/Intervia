@@ -8,6 +8,7 @@ from app.models.features import (
 	InterviewQuestion,
 	JobDescription,
 	Resume,
+	ResumeUsage,
 )
 from app.models.user import UserProfile
 
@@ -19,5 +20,6 @@ __all__ = [
 	"InterviewQuestion",
 	"JobDescription",
 	"Resume",
+	"ResumeUsage",
 	"UserProfile",
 ]

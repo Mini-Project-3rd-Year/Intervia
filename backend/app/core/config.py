@@ -6,7 +6,7 @@ Uses pydantic-settings to load from environment variables / .env file.
 from functools import lru_cache
 from typing import List
 
-from pydantic import AnyHttpUrl, field_validator
+from pydantic import AnyHttpUrl, Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -70,7 +70,11 @@ class Settings(BaseSettings):
     # ---- File Storage -------------------------------------
     STORAGE_PROVIDER: str = "local"
     LOCAL_STORAGE_PATH: str = "./uploads"
-    MAX_UPLOAD_SIZE_MB: int = 10
+    MAX_UPLOAD_SIZE_MB: int = Field(default=10, ge=1)
+    RESUME_DAILY_UPLOAD_LIMIT: int = Field(default=10, ge=1)
+    RESUME_DAILY_PROFILE_LIMIT: int = Field(default=5, ge=1)
+    RESUME_PROFILE_MAX_CHARS: int = Field(default=20000, ge=3000)
+    RESUME_PROFILE_TIMEOUT_SECONDS: int = Field(default=30, ge=1)
 
 
 @lru_cache

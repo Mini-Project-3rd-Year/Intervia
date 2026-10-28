@@ -13,22 +13,23 @@ interface ResumeProfile {
 }
 
 export default function ResumePage() {
+  const [resumeId, setResumeId] = useState<string | null>(null);
   const [profile, setProfile] = useState<ResumeProfile | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleUpload = async (resumeId: string) => {
+  const loadProfile = async (id: string) => {
     setLoading(true);
     setError(null);
     try {
       const { data } = await apiClient.get<ResumeProfile>(
-        `/resume/${resumeId}/profile`,
+        `/resume/${id}/profile`,
       );
       setProfile(data);
-    } catch (error) {
+    } catch (caughtError) {
       setError(
-        (isAxiosError<{ detail?: string }>(error)
-          ? error.response?.data?.detail
+        (isAxiosError<{ detail?: string }>(caughtError)
+          ? caughtError.response?.data?.detail
           : undefined) ||
           "Your resume was uploaded, but its profile could not be created.",
       );
@@ -37,7 +38,18 @@ export default function ResumePage() {
     }
   };
 
+  const handleUpload = async (id: string, status: string, message: string) => {
+    if (status !== "ready") {
+      setResumeId(null);
+      setError(message);
+      return;
+    }
+    setResumeId(id);
+    await loadProfile(id);
+  };
+
   const reset = () => {
+    setResumeId(null);
     setProfile(null);
     setError(null);
   };
@@ -111,6 +123,15 @@ export default function ResumePage() {
             {error && (
               <div role="alert" style={{ color: "#f87171", marginTop: 16 }}>
                 <p>{error}</p>
+                {resumeId && (
+                  <button
+                    type="button"
+                    onClick={() => void loadProfile(resumeId)}
+                    style={{ marginTop: 12, marginRight: 8, padding: "0.5rem 0.75rem", cursor: "pointer" }}
+                  >
+                    Retry profile extraction
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={reset}
