@@ -21,13 +21,11 @@ The CSP is intentionally API-safe. Frontend asset policy belongs to the frontend
 
 - Pydantic validates email and password constraints at the request boundary.
 - User display text is stripped of HTML markup, control characters, surrounding whitespace, and bounded to its field maximum.
-- Resume upload validation checks signatures and archive structure, limits size, DOCX archive entries and expanded size, and PDF page count. MIME type and filename alone are not trusted.
-- Resume content is sent to Google Gemini only after the user explicitly consents. Consent is persisted with the resume and required by the profile endpoint. The application owner must clearly disclose Google's processing in its privacy notice and verify that the provider configuration satisfies applicable privacy obligations.
-- Resume uploads and Gemini profile extractions have configurable per-user daily quotas. The counters are persisted in PostgreSQL so they apply across application workers.
+- File upload validation must inspect magic bytes before parsing when upload endpoints are introduced. MIME type and filename alone are not trusted.
 
 ## Database safety
 
-The async SQLAlchemy database layer is active. Queries must use SQLAlchemy expressions or bound parameters; string interpolation of user values is prohibited.
+The current repository has not activated its SQLAlchemy/async database layer. When it is enabled, queries must use SQLAlchemy expressions or bound parameters; string interpolation of user values is prohibited.
 
 ## Secrets and authentication
 
@@ -35,4 +33,4 @@ Supabase remains the credential authority. Access tokens are validated through S
 
 ## Testing and limits
 
-The backend CI workflow installs pinned dependencies, runs the complete test suite, and enforces the 80% coverage target. Resume parsing, profile extraction, upload cleanup, and quota behavior are covered by backend tests.
+The backend CI workflow installs pinned dependencies, runs the complete test suite, and enforces the 80% coverage target. The current repository contains only health, auth, and WebSocket endpoints; tests for future resume, jobs, evaluation, and coaching APIs should be added when those routes are implemented.
